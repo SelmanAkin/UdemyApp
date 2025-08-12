@@ -1,0 +1,103 @@
+<div class="new-course-container">
+  <h1>📚 Yeni Kurs Oluştur</h1>
+
+  <%= form_with(model: @course, local: true) do |f| %>
+    <div class="form-group">
+      <%= f.label :title, "Kurs Başlığı" %>
+      <%= f.text_field :title %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :description, "Açıklama" %>
+      <%= f.text_area :description, rows: 6 %>
+    </div>
+
+    <%= f.submit "Kursu Kaydet", class: "submit-btn" %>
+  <% end %>
+
+  <% if @course.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@course.errors.count, "hata") %> oluştu:</h2>
+      <ul>
+        <% @course.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</div>
+
+<!-- Css Kullanarak Oluşturduğum Front -->
+<style>
+  .new-course-container {
+    max-width: 700px;
+    margin: 40px auto;
+    font-family: "Segoe UI", sans-serif;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .new-course-container h1 {
+    font-size: 28px;
+    margin-bottom: 25px;
+    color: #1e293b;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 6px;
+    color: #334155;
+  }
+
+  .form-group input[type="text"],
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #f9fafb;
+  }
+
+  .submit-btn {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+
+  .submit-btn:hover {
+    background-color: #1d4ed8;
+  }
+
+  #error_explanation {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 8px;
+    color: #991b1b;
+  }
+
+  #error_explanation h2 {
+    margin-top: 0;
+    color: #b91c1c;
+  }
+
+  #error_explanation ul {
+    margin-top: 10px;
+    padding-left: 20px;
+  }
+</style>

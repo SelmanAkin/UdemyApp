@@ -1,0 +1,162 @@
+<div class="course-container">
+  <div class="course-header">
+    <h1><%= @course.title %></h1>
+  </div>
+
+  <div class="course-description">
+    <%= simple_format(@course.description) %>
+  </div>
+
+  <% if user_signed_in? && (current_user.role == "instructor" || current_user.role == "admin") %>
+    <div class="video-actions">
+      <%= link_to "➕ Yeni Video Ekle", new_course_video_path(@course), class: "btn-new-video" %>
+    </div>
+  <% end %>
+
+  <% @videos.each do |video| %>
+    <div class="video-block">
+      <h4><%= link_to video.title, video_path(video) %></h4>
+      <p class="video-description"><%= video.description %></p>
+
+      <h5>Yorumlar</h5>
+      <% if video.reviews.any? %>
+        <ul class="review-list">
+          <% video.reviews.each do |review| %>
+            <li class="review-item">
+              <strong><%= review.user.name %></strong> — <%= review.rating %> ⭐ <br>
+              <%= review.comment %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="no-reviews">Henüz yorum yapılmamış.</p>
+      <% end %>
+
+      <% if user_signed_in? && current_user.role == "student" && @course.students.include?(current_user) %>
+        <div class="review-form">
+          <%= form_with model: [video, Review.new], local: true do |form| %>
+            <div>
+              <%= form.label :rating, "Puan (1-5)" %><br>
+              <%= form.select :rating, options_for_select(1..5) %>
+            </div>
+            <div>
+              <%= form.label :comment, "Yorum" %><br>
+              <%= form.text_area :comment, rows: 2 %>
+            </div>
+            <%= form.submit "Gönder" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<!-- Css Kullanarak Oluşturduğum Front -->
+<style>
+  .course-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    font-family: "Segoe UI", sans-serif;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+  }
+
+  .course-header h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #1e293b;
+  }
+
+  .course-description {
+    font-size: 16px;
+    margin-bottom: 40px;
+    color: #475569;
+  }
+
+  .video-block {
+    margin-bottom: 40px;
+    padding: 20px;
+    border: 1px solid #d7e0ec;
+    border-radius: 8px;
+    background-color: #f9fafb;
+  }
+
+  .video-block h4 {
+    margin-bottom: 8px;
+    color: #0f172a;
+  }
+
+  .video-description {
+    margin-bottom: 15px;
+    color: #4b5563;
+  }
+
+  .review-list {
+    margin-top: 10px;
+  }
+
+  .review-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #e2e8f0;
+    color: #334155;
+  }
+
+  .no-reviews {
+    font-style: italic;
+    color: #64748b;
+  }
+
+  .review-form {
+    margin-top: 20px;
+    background-color: #eef3f9;
+    padding: 15px;
+    border-radius: 6px;
+  }
+
+  .review-form label {
+    font-weight: bold;
+  }
+
+  .review-form textarea, .review-form select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .review-form input[type="submit"] {
+    margin-top: 10px;
+    padding: 10px 16px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .review-form input[type="submit"]:hover {
+    background-color: #1d4ed8;
+  }
+
+  .video-actions {
+    margin-bottom: 20px;
+  }
+
+  .btn-new-video {
+    display: inline-block;
+    margin-bottom: 20px;
+    background-color: #10b981;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+  }
+
+  .btn-new-video:hover {
+    background-color: #059669;
+  }
+</style>

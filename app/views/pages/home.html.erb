@@ -1,0 +1,234 @@
+<section class="hero">
+  <h1>UdemyApp’e Hoş Geldiniz</h1>
+  <p>🎓 Uzman eğitmenlerden kaliteli kursları hemen keşfedin.</p>
+  <%= link_to "Tüm Kurslara Göz At", courses_path, class: "hero-btn" %>
+</section>
+
+<section class="featured">
+  <h2>⭐ Öne Çıkan Kurslar</h2>
+  <div class="course-grid">
+    <% @featured_courses.each do |course| %>
+      <%= link_to course_path(course), class: "course-card" do %>
+        <div class="course-card-content">
+          <h3><%= course.title %></h3>
+          <p><%= truncate(course.description, length: 90) %></p>
+          <small>👨‍🏫 Eğitmen: <%= course.instructor.name %></small>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</section>
+
+<section class="ai-chatbox">
+  <h2>🤖 UdemyApp AI Asistan</h2>
+  <p>Merak ettiklerinizi yazın, akıllı asistanımız cevaplasın!</p>
+
+  <%= form_with url: "/ask_ai", method: :post, local: false do |form| %>
+    <div class="form-group">
+      <%= form.text_field :prompt, placeholder: "Bir şey sor...", class: "chat-input", autofocus: true %>
+      <%= form.submit "Gönder", class: "chat-submit" %>
+    </div>
+  <% end %>
+
+  <div id="ai-response">
+    <%= turbo_frame_tag "response" do %>
+      
+    <% end %>
+  </div>
+</section>
+
+<!-- Css Kullanarak Oluşturduğum Front -->
+<style>
+  body {
+    background-color: #EAF4FB;
+    background-image: radial-gradient(#FFD700 1.2px, transparent 1.2px);
+    background-size: 40px 40px;
+    background-position: center;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  .hero {
+    text-align: center;
+    margin: 60px 0;
+    background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+    color: white;
+    padding: 60px 20px;
+    border-radius: 12px;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+
+  .hero p {
+    font-size: 1.2rem;
+    margin: 20px 0;
+  }
+
+  .hero-btn {
+    padding: 12px 24px;
+    background-color: white;
+    color: #1E3A8A;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+
+  .hero-btn:hover {
+    background-color: #f0f4ff;
+    transform: scale(1.05);
+  }
+
+  .divider {
+    margin: 60px auto;
+    border: none;
+    height: 2px;
+    background: #E5E7EB;
+    width: 90%;
+  }
+
+  .featured {
+    background-color: #F0F4FF;
+    padding: 40px 20px;
+    max-width: 130%;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    transform: translateX(-120px);
+  }
+
+  .course-scroll-wrapper {
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+
+  .featured h2 {
+    font-size: 2rem;
+    color: #1F2937;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .course-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 30px;
+    padding-bottom: 10px;
+    scroll-behavior: smooth;
+  }
+
+  .course-card {
+    flex: 0 0 auto;
+    width: 360px;
+    height: 260px;
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    overflow: hidden;
+  }
+
+  .course-card-content {
+    padding: 20px;
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+
+  .course-card-content::-webkit-scrollbar {
+    background-color: #ccc;
+    border-radius: 10px;
+  }
+
+  .course-card-content::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+  }
+
+  .course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .course-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: #111827;
+  }
+
+  .course-card p {
+    font-size: 0.95rem;
+    color: #374151;
+    margin-bottom: 10px;
+  }
+
+  .course-card small {
+    color: #6B7280;
+  }
+
+  .ai-chatbox {
+    background-color: #ffffff;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    max-width: 700px;
+    margin: 60px auto;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+
+  .ai-chatbox h2 {
+    font-size: 1.8rem;
+    color: #1F2937;
+    margin-bottom: 10px;
+  }
+
+  .ai-chatbox p {
+    font-size: 1rem;
+    color: #4B5563;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .chat-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 60%;
+  }
+
+  .chat-submit {
+    padding: 10px 20px;
+    background-color: #3B82F6;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .chat-submit:hover {
+    background-color: #2563EB;
+  }
+</style>

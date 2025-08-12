@@ -1,0 +1,139 @@
+<div class="messages-page">
+  <h2>📬 Mesaj Kutusu</h2>
+
+  <div class="message-section">
+    <h3>📥 Gelen Mesajlar</h3>
+    <% @received_messages.each do |msg| %>
+      <div class="message-box">
+        <div class="message-header">
+          <%= msg.sender.name %>
+          <span class="timestamp"><%= msg.created_at.strftime("%d.%m.%Y %H:%M") %></span>
+        </div>
+        <div class="message-body"><%= msg.body %></div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="message-section">
+    <h3>📤 Gönderilen Mesajlar</h3>
+    <% @sent_messages.each do |msg| %>
+      <div class="message-box">
+        <div class="message-header">
+          ➡️ <%= msg.receiver.name %>
+          <span class="timestamp"><%= msg.created_at.strftime("%d.%m.%Y %H:%M") %></span>
+        </div>
+        <div class="message-body"><%= msg.body %></div>
+        <div class="delete-btn">
+          <%= button_to "Sil", message_path(msg), method: :delete, data: { confirm: "Emin misin?" } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="message-section">
+    <h3>✉️ Yeni Mesaj Gönder</h3>
+    <%= form_with model: @message, local: true do |f| %>
+      <div>
+        <%= f.label :receiver_id, "Alıcı" %>
+        <%= f.collection_select :receiver_id, @users, :id, :name, prompt: "Kullanıcı seçin" %>
+      </div>
+      <div>
+        <%= f.label :body, "Mesaj" %>
+        <%= f.text_area :body %>
+      </div>
+      <%= f.submit "Gönder" %>
+    <% end %>
+  </div>
+</div>
+
+<!-- Css Kullanarak Oluşturduğum Front -->
+<style>
+  .messages-page {
+    max-width: 960px;
+    margin: auto;
+    font-family: "Segoe UI", sans-serif;
+    padding: 30px 20px;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2c3e50;
+  }
+
+  .message-section {
+    margin-bottom: 40px;
+    padding: 20px;
+    border: 1px solid #cfd9e6;
+    border-radius: 10px;
+    background-color: #f8fafc;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  }
+
+  .message-box {
+    background: #ffffff;
+    border: 1px solid #e1e7f0;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+  }
+
+  .message-header {
+    font-weight: bold;
+    color: #2563eb;
+  }
+
+  .timestamp {
+    font-size: 13px;
+    color: #888;
+    margin-left: 8px;
+  }
+
+  .message-body {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .delete-btn {
+    margin-top: 8px;
+  }
+
+  form {
+    background: #ffffff;
+    border: 1px solid #cdd9ea;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+
+  form textarea, form select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  form input[type="submit"] {
+    margin-top: 15px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  form input[type="submit"]:hover {
+    background-color: #1e4ed8;
+  }
+</style>

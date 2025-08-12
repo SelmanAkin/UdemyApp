@@ -1,0 +1,7 @@
+<% if current_user.student? %>
+  <% if @course.students.include?(current_user) %>
+    <p><strong>Bu kursa zaten kayıtlısın.</strong></p>
+  <% else %>
+    <%= button_to "Kursa Kayıt Ol", enroll_course_path(@course), method: :post %>
+  <% end %>
+<% end %>

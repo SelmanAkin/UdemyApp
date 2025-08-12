@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>UdemyApp</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+    
+  </head>
+
+  <body>
+  <header style="padding: 1rem; background:linear-gradient(135deg, #1E3A8A, #3B82F6); margin-bottom: 20px;">
+  <header style="padding: 1rem; background:linear-gradient(135deg, #1E3A8A, #3B82F6); display: flex; justify-content: space-between; align-items: center;">
+  <div>
+    <%= link_to "UdemyApp", root_path, style: "font-weight: bold; font-size: 1.2rem; margin-right: 20px; color: white;" %>
+    <%= link_to "Kurslar", courses_path, style: "margin-right: 15px; color: white;" %>
+
+  </div>
+
+  <div>
+    <% if user_signed_in? %>
+      <span style="color: white;"><%= current_user.name %> (<%= current_user.role %>)</span> |
+      <%= button_to "Çıkış Yap", destroy_user_session_path, method: :delete, form: { "data-turbo" => false }, style: "margin-left: 10px; color: white;" %>
+    <% else %>
+      <%= link_to "Giriş Yap", new_user_session_path, style: "color: white;" %> |
+      <%= link_to "Kayıt Ol", new_user_registration_path, style: "color: white;" %>
+    <% end %>
+  </div>
+</header>
+
+  </header>
+
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
+
+  <%= yield %>
+</body>
+
+</html>

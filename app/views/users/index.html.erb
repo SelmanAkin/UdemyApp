@@ -1,0 +1,27 @@
+<h1>Kullanıcılar</h1>
+<table>
+  <thead>
+    <tr>
+      <th>İsim</th>
+      <th>Email</th>
+      <th>Rol</th>
+      <th>İşlemler</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td><%= user.role %></td>
+        <td>
+          <% unless user == current_user %>
+            <%= button_to "Sil", user_path(user), method: :delete, data: { confirm: "Silmek istediğinize emin misiniz?" } %>
+          <% else %>
+            <em>(Bu sizsiniz)</em>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

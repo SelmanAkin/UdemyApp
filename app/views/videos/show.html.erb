@@ -1,0 +1,114 @@
+<div class="video-container">
+  <h2><%= @video.title %></h2>
+  <p class="video-description"><%= @video.description %></p>
+
+  <div class="video-player">
+    <%= video_tag url_for(@video.file), controls: true, size: "100%" %>
+  </div>
+
+  <div class="reviews-section">
+    <h3>📝 Yorumlar</h3>
+    <% @video.reviews.each do |review| %>
+      <div class="review-box">
+        <strong><%= review.user.name %></strong>
+        <span><%= review.rating %> ⭐</span>
+        <p><%= review.comment %></p>
+      </div>
+    <% end %>
+  </div>
+
+  <% if user_signed_in? && current_user.role == "student" %>
+    <div class="review-form">
+      <h4>Yorum Yap</h4>
+      <%= form_with model: [@video, Review.new], local: true do |f| %>
+        <div>
+          <%= f.label :rating, "Puan (1-5)" %>
+          <%= f.number_field :rating, in: 1..5 %>
+        </div>
+        <div>
+          <%= f.label :comment, "Yorumunuz" %>
+          <%= f.text_area :comment %>
+        </div>
+        <%= f.submit "Gönder" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<!-- Css Kullanarak Oluşturduğum Front -->
+<style>
+  .video-container {
+    max-width: 880px;
+    margin: 40px auto;
+    font-family: "Segoe UI", sans-serif;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+  }
+
+  .video-player {
+    margin: 20px 0;
+  }
+
+  .video-description {
+    margin-bottom: 30px;
+  }
+
+  .reviews-section {
+    margin-top: 40px;
+  }
+
+  .review-box {
+    background: #f9fafe;
+    border: 1px solid #dce3ec;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .review-box strong {
+    color: #2563eb;
+  }
+
+  .review-box span {
+    color: #f59e0b;
+    font-weight: bold;
+  }
+
+  .review-form {
+    background: #f4f7fb;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ccd9ec;
+    margin-top: 30px;
+  }
+
+  .review-form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+
+  .review-form input, .review-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+  }
+
+  .review-form input[type="submit"] {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    margin-top: 15px;
+    padding: 10px 16px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .review-form input[type="submit"]:hover {
+    background-color: #1d4ed8;
+  }
+</style>

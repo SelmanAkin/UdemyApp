@@ -1,0 +1,86 @@
+<div class="student-dashboard">
+  <h1>🎓 Öğrenci Paneli</h1>
+
+  <h3>Kayıtlı Olduğun Kurslar</h3>
+
+  <% if current_user.enrolled_courses.any? %>
+    <div class="course-list">
+      <% current_user.enrolled_courses.each do |course| %>
+        <div class="course-card">
+          <h3><%= link_to course.title, course_path(course) %></h3>
+          <p><%= truncate(course.description, length: 100) %></p>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="no-course">Henüz herhangi bir kursa kayıtlı değilsiniz.</p>
+  <% end %>
+
+  <div class="action-buttons">
+    <%= link_to "📨 Mesaj Kutusu", messages_path, class: "btn btn-primary" %>
+  </div>
+</div>
+
+<!-- Css Kullanarak Oluşturduğum Front -->
+<style>
+  .student-dashboard {
+    max-width: 960px;
+    margin: 40px auto;
+    font-family: "Segoe UI", sans-serif;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .course-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .course-card {
+    flex: 1;
+    min-width: 240px;
+    background: #fefefe;
+    padding: 18px;
+    border: 1px solid #dfe6ee;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  .course-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: #2c3e50;
+  }
+
+  .no-course {
+    text-align: center;
+    color: #999;
+    margin-top: 20px;
+  }
+
+  .action-buttons {
+    margin-top: 30px;
+    text-align: center;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 10px 18px;
+    margin: 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+
+  .btn-primary { background-color: #2563eb; color: white; }
+  .btn-primary:hover {
+    background-color: #1e4fd5;
+  }
+</style>
